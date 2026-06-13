@@ -1,27 +1,914 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Hello Mukesh</title>
-  <style>
-    body {
-      margin: 0;
-      height: 100vh;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      background: linear-gradient(135deg, #667eea, #764ba2);
-      font-family: Arial, sans-serif;
-    }
-    h1 {
-      color: white;
-      font-size: 4rem;
-      text-shadow: 2px 2px 8px rgba(0,0,0,0.3);
-    }
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mukesh — Graphic Designer</title>
+<meta name="description" content="Portfolio of Mukesh, graphic designer working in brand identity, print, packaging and editorial design.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+
+  /* ============ TOKENS ============ */
+  :root{
+    --ink:        #0E0E10;
+    --ink-soft:   #19191C;
+    --paper:      #ECEEEA;
+    --paper-dim:  #D6D8D2;
+    --cyan:       #00AEEF;
+    --magenta:    #EC0C6D;
+    --yellow:     #FFD500;
+    --muted:      #8C8C90;
+    --line:       rgba(236,238,234,0.14);
+    --line-dark:  rgba(14,14,16,0.14);
+
+    --font-display: 'Space Grotesk', sans-serif;
+    --font-body:    'Inter', sans-serif;
+    --font-mono:    'Space Mono', monospace;
+
+    --space-1: 0.5rem;
+    --space-2: 1rem;
+    --space-3: 2rem;
+    --space-4: 4rem;
+    --space-5: 7rem;
+  }
+
+  /* ============ RESET ============ */
+  *{ margin:0; padding:0; box-sizing:border-box; }
+  html{ scroll-behavior:smooth; }
+  body{
+    font-family:var(--font-body);
+    background:var(--paper);
+    color:var(--ink);
+    line-height:1.6;
+    -webkit-font-smoothing:antialiased;
+  }
+  img{ display:block; max-width:100%; }
+  a{ color:inherit; }
+  ::selection{ background:var(--magenta); color:var(--paper); }
+
+  :focus-visible{
+    outline:2px solid var(--magenta);
+    outline-offset:3px;
+  }
+
+  /* ============ UTILITIES ============ */
+  .wrap{
+    max-width:1240px;
+    margin:0 auto;
+    padding:0 var(--space-3);
+  }
+  .eyebrow{
+    font-family:var(--font-mono);
+    font-size:0.75rem;
+    letter-spacing:0.18em;
+    text-transform:uppercase;
+  }
+  .swatches{ display:flex; gap:6px; align-items:center; }
+  .swatch{ width:12px; height:12px; border-radius:50%; }
+  .swatch.c{ background:var(--cyan); }
+  .swatch.m{ background:var(--magenta); }
+  .swatch.y{ background:var(--yellow); }
+  .swatch.k-paper{ background:var(--paper); }
+  .swatch.k-ink{ background:var(--ink); border:1px solid var(--line); }
+
+  /* ============ NAV ============ */
+  .nav{
+    position:fixed;
+    top:0; left:0; right:0;
+    z-index:100;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    padding:1.1rem var(--space-3);
+    background:rgba(14,14,16,0.55);
+    backdrop-filter:blur(10px);
+    -webkit-backdrop-filter:blur(10px);
+    border-bottom:1px solid var(--line);
+  }
+  .nav-mark{
+    font-family:var(--font-mono);
+    font-weight:700;
+    font-size:0.95rem;
+    color:var(--paper);
+    letter-spacing:0.04em;
+    text-decoration:none;
+  }
+  .nav-links{
+    display:flex;
+    gap:clamp(1rem, 2vw, 2.2rem);
+    list-style:none;
+  }
+  .nav-links a{
+    font-family:var(--font-mono);
+    font-size:0.78rem;
+    letter-spacing:0.1em;
+    text-transform:uppercase;
+    color:var(--paper);
+    text-decoration:none;
+    opacity:0.75;
+    transition:opacity 0.2s ease, color 0.2s ease;
+    position:relative;
+    padding-bottom:2px;
+  }
+  .nav-links a:hover{ opacity:1; color:var(--cyan); }
+
+  /* ============ HERO ============ */
+  .hero{
+    background:var(--ink);
+    color:var(--paper);
+    min-height:100vh;
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+    padding:calc(var(--space-3) + 4rem) var(--space-3) var(--space-3);
+    overflow:hidden;
+    position:relative;
+  }
+  .hero-inner{ max-width:1240px; margin:0 auto; width:100%; }
+  .hero-stack{
+    position:relative;
+    margin-bottom:var(--space-2);
+  }
+  .hero-title{
+    position:relative;
+    font-family:var(--font-display);
+    font-weight:700;
+    font-size:clamp(3.2rem, 15vw, 11.5rem);
+    line-height:0.92;
+    letter-spacing:-0.03em;
+    text-transform:uppercase;
+  }
+  .hero-title .layer{
+    position:absolute;
+    top:0; left:0;
+    display:block;
+    width:100%;
+    transition:transform 1.1s cubic-bezier(.16,1,.3,1), opacity 1.1s ease;
+  }
+  .hero-title .layer-k{
+    position:relative;
+    color:var(--paper);
+    transform:translate(0,0);
+  }
+  .hero-title .layer-c{ color:var(--cyan); mix-blend-mode:screen; }
+  .hero-title .layer-m{ color:var(--magenta); mix-blend-mode:screen; }
+  .hero-title .layer-y{ color:var(--yellow); mix-blend-mode:screen; }
+
+  /* pre-registration: layers thrown apart on load */
+  .hero-title.is-loading .layer-c{ transform:translate(34px,26px); opacity:0.85; }
+  .hero-title.is-loading .layer-m{ transform:translate(-38px,-22px); opacity:0.85; }
+  .hero-title.is-loading .layer-y{ transform:translate(20px,-30px); opacity:0.85; }
+
+  /* settled: small permanent misregistration, like real print */
+  .hero-title.is-loaded .layer-c{ transform:translate(7px,5px); }
+  .hero-title.is-loaded .layer-m{ transform:translate(-7px,-4px); }
+  .hero-title.is-loaded .layer-y{ transform:translate(3px,-6px); }
+
+  .hero-role{
+    font-family:var(--font-display);
+    font-weight:500;
+    font-size:clamp(1.1rem, 2.4vw, 1.6rem);
+    max-width:34ch;
+    margin-top:var(--space-2);
+    color:var(--paper);
+  }
+  .hero-location{
+    font-family:var(--font-mono);
+    font-size:0.85rem;
+    color:var(--muted);
+    margin-top:0.6rem;
+    letter-spacing:0.04em;
+  }
+
+  .proof-bar{
+    margin-top:var(--space-5);
+    display:flex;
+    align-items:center;
+    gap:1.4rem;
+    flex-wrap:wrap;
+    border-top:1px solid var(--line);
+    padding-top:var(--space-2);
+    font-family:var(--font-mono);
+    font-size:0.72rem;
+    letter-spacing:0.16em;
+    text-transform:uppercase;
+    color:var(--muted);
+  }
+  .proof-bar .scroll-cue{
+    margin-left:auto;
+    color:var(--paper);
+    display:flex;
+    align-items:center;
+    gap:0.5rem;
+  }
+  .scroll-cue span.arrow{
+    display:inline-block;
+    animation:bob 1.6s ease-in-out infinite;
+  }
+  @keyframes bob{
+    0%,100%{ transform:translateY(0); }
+    50%{ transform:translateY(5px); }
+  }
+
+  /* ============ ABOUT ============ */
+  .about{
+    background:var(--paper);
+    color:var(--ink);
+    padding:var(--space-5) 0;
+  }
+  .about-grid{
+    display:grid;
+    grid-template-columns:1.5fr 1fr;
+    gap:var(--space-4);
+    align-items:start;
+  }
+  .about h2{
+    font-family:var(--font-display);
+    font-weight:700;
+    font-size:clamp(1.8rem, 4vw, 2.6rem);
+    margin-bottom:var(--space-2);
+    letter-spacing:-0.01em;
+  }
+  .about p{
+    font-size:1.05rem;
+    max-width:48ch;
+    color:#3A3A3E;
+    margin-bottom:1.2rem;
+  }
+  .spec-sheet{
+    border:1px dashed var(--ink);
+    padding:var(--space-2) var(--space-2);
+    font-family:var(--font-mono);
+    font-size:0.82rem;
+  }
+  .spec-sheet .spec-title{
+    text-transform:uppercase;
+    letter-spacing:0.18em;
+    font-size:0.7rem;
+    color:var(--muted);
+    margin-bottom:var(--space-2);
+    padding-bottom:0.6rem;
+    border-bottom:1px dashed var(--line-dark);
+  }
+  .spec-row{
+    display:flex;
+    justify-content:space-between;
+    gap:1rem;
+    padding:0.55rem 0;
+    border-bottom:1px solid var(--line-dark);
+  }
+  .spec-row:last-child{ border-bottom:none; }
+  .spec-row dt{ color:var(--muted); }
+  .spec-row dd{ text-align:right; max-width:60%; }
+
+  /* ============ WORK (signature horizontal scroll) ============ */
+  .work{
+    background:var(--ink);
+    color:var(--paper);
+    position:relative;
+  }
+  .work-sticky{
+    position:sticky;
+    top:0;
+    height:100vh;
+    display:flex;
+    flex-direction:column;
+    overflow:hidden;
+    padding-top:5.5rem;
+  }
+  .work-header{
+    display:flex;
+    align-items:baseline;
+    justify-content:space-between;
+    padding:0 var(--space-3) var(--space-3);
+    width:100%;
+  }
+  .work-header h2{
+    font-family:var(--font-display);
+    font-weight:700;
+    font-size:clamp(1.8rem, 4vw, 2.6rem);
+  }
+  .work-counter{
+    font-family:var(--font-mono);
+    font-size:0.85rem;
+    letter-spacing:0.1em;
+    color:var(--muted);
+  }
+  .work-counter #counter-current{ color:var(--paper); }
+
+  .work-track{
+    display:flex;
+    gap:var(--space-3);
+    padding:0 var(--space-3) var(--space-3);
+    flex:1;
+    align-items:center;
+    will-change:transform;
+  }
+  .proof-card{
+    flex:0 0 auto;
+    width:min(78vw, 460px);
+    background:var(--paper);
+    color:var(--ink);
+    border-radius:2px;
+    overflow:hidden;
+    display:flex;
+    flex-direction:column;
+    position:relative;
+  }
+  /* crop marks */
+  .proof-card::before,
+  .proof-card::after{
+    content:'';
+    position:absolute;
+    width:14px; height:14px;
+    border-top:1px solid var(--ink);
+    border-left:1px solid var(--ink);
+    top:6px; left:6px;
+    z-index:2;
+    opacity:0.4;
+  }
+  .proof-card::after{
+    top:auto; left:auto;
+    bottom:6px; right:6px;
+    border-top:none; border-left:none;
+    border-bottom:1px solid var(--ink);
+    border-right:1px solid var(--ink);
+  }
+
+  .card-visual{
+    position:relative;
+    aspect-ratio:4/3;
+    overflow:hidden;
+  }
+  .card-meta{
+    padding:1.4rem 1.5rem 1.6rem;
+  }
+  .card-tag{
+    font-family:var(--font-mono);
+    font-size:0.7rem;
+    letter-spacing:0.16em;
+    text-transform:uppercase;
+    color:var(--muted);
+  }
+  .card-meta h3{
+    font-family:var(--font-display);
+    font-weight:700;
+    font-size:1.5rem;
+    margin:0.4rem 0 0.5rem;
+  }
+  .card-meta p{
+    font-size:0.92rem;
+    color:#4A4A4E;
+    max-width:38ch;
+  }
+  .card-job{
+    display:block;
+    margin-top:1rem;
+    font-family:var(--font-mono);
+    font-size:0.7rem;
+    letter-spacing:0.1em;
+    color:var(--muted);
+    border-top:1px solid var(--line-dark);
+    padding-top:0.8rem;
+  }
+
+  /* ---- Visual 1: Verandah Coffee (branding) ---- */
+  .visual-branding{ background:linear-gradient(135deg,#C9794A,#42281D); }
+  .visual-branding .shape-circle{
+    position:absolute; width:64%; aspect-ratio:1; border-radius:50%;
+    background:#F2E6D8; top:14%; left:10%;
+  }
+  .visual-branding .shape-rule{
+    position:absolute; right:8%; bottom:14%;
+    width:46%; height:3px; background:#F2E6D8;
+  }
+  .visual-branding .shape-label{
+    position:absolute; right:8%; bottom:18%;
+    font-family:var(--font-mono); font-size:0.7rem; letter-spacing:0.2em;
+    color:#F2E6D8;
+  }
+
+  /* ---- Visual 2: Sundown Fest (poster) ---- */
+  .visual-poster{ background:linear-gradient(180deg,#241140 0%, #FF7A33 100%); }
+  .visual-poster .shape-sun{
+    position:absolute; width:55%; aspect-ratio:1; border-radius:50%;
+    background:#FFD500; left:50%; top:38%; transform:translate(-50%,-50%);
+  }
+  .visual-poster .shape-stripes{
+    position:absolute; left:0; right:0; bottom:0; height:42%;
+    background:repeating-linear-gradient(0deg, #241140 0 6px, transparent 6px 16px);
+  }
+  .visual-poster .shape-type{
+    position:absolute; left:6%; bottom:8%;
+    font-family:var(--font-display); font-weight:700;
+    font-size:2.4rem; letter-spacing:-0.02em; text-transform:uppercase;
+    color:#F4F1EA; transform:rotate(-6deg); line-height:0.9;
+  }
+
+  /* ---- Visual 3: Loop Records (album art) ---- */
+  .visual-music{ background:#1C2A20; }
+  .visual-music .ring{
+    position:absolute; border-radius:50%; border:2px solid #EDE7D6;
+    top:50%; left:50%; transform:translate(-50%,-50%);
+    opacity:0.5;
+  }
+  .visual-music .ring.r1{ width:78%; aspect-ratio:1; }
+  .visual-music .ring.r2{ width:56%; aspect-ratio:1; opacity:0.7; }
+  .visual-music .ring.r3{ width:34%; aspect-ratio:1; opacity:0.9; }
+  .visual-music .ring.r4{
+    width:8%; aspect-ratio:1; background:#FF7A33; border:none; opacity:1;
+  }
+
+  /* ---- Visual 4: Nilam Organics (packaging) ---- */
+  .visual-packaging{ background:#D9E2CD; }
+  .visual-packaging .box-face{
+    position:absolute; width:46%; height:46%;
+    background:#F4F1EA; top:28%; left:14%;
+    border:1px solid #B9C5A8;
+  }
+  .visual-packaging .box-top{
+    position:absolute; width:46%; height:18%;
+    background:#EAEFE0; top:14%; left:24%;
+    transform:skewX(-22deg);
+    border:1px solid #B9C5A8;
+  }
+  .visual-packaging .leaf{
+    position:absolute; right:10%; top:18%;
+    width:40%; height:62%;
+    background:#6E8C4E;
+    clip-path:polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%);
+    opacity:0.85;
+  }
+  .visual-packaging .pkg-label{
+    position:absolute; left:18%; top:42%;
+    font-family:var(--font-mono); font-size:0.65rem; letter-spacing:0.18em;
+    color:#4F5E3D;
+  }
+
+  /* ---- Visual 5: Quarter Studio (editorial) ---- */
+  .visual-editorial{ background:#E7E4DB; }
+  .visual-editorial .ed-block{
+    position:absolute; background:#0E0E10;
+  }
+  .visual-editorial .ed-1{ top:12%; left:8%; width:38%; height:54%; opacity:0.08; }
+  .visual-editorial .ed-2{ top:12%; left:52%; width:40%; height:14%; opacity:0.85; }
+  .visual-editorial .ed-3{ top:32%; left:52%; width:40%; height:2px; opacity:0.3; }
+  .visual-editorial .ed-4{ top:40%; left:52%; width:28%; height:2px; opacity:0.3; }
+  .visual-editorial .ed-5{ top:48%; left:52%; width:34%; height:2px; opacity:0.3; }
+  .visual-editorial .ed-quote{
+    position:absolute; left:8%; bottom:10%;
+    font-family:var(--font-display); font-weight:700; font-size:3.5rem;
+    color:#0E0E10; opacity:0.12; line-height:1;
+  }
+
+  /* ---- Visual 6: Pulse (UI kit) ---- */
+  .visual-ui{ background:linear-gradient(160deg,#152040,#2F5BD9); }
+  .visual-ui .phone{
+    position:absolute; left:50%; top:50%; transform:translate(-50%,-50%);
+    width:46%; height:84%;
+    background:#0E1730; border:2px solid rgba(255,255,255,0.18);
+    border-radius:14px; padding:14px;
+    display:flex; flex-direction:column; gap:8px;
+  }
+  .visual-ui .bar{
+    height:10px; border-radius:4px; background:rgba(255,255,255,0.16);
+  }
+  .visual-ui .bar.short{ width:40%; }
+  .visual-ui .bar.accent{ background:var(--cyan); height:34px; border-radius:8px; margin-top:auto; }
+
+  /* ============ PROCESS ============ */
+  .process{
+    background:var(--paper);
+    color:var(--ink);
+    padding:var(--space-5) 0;
+  }
+  .process h2{
+    font-family:var(--font-display);
+    font-weight:700;
+    font-size:clamp(1.8rem, 4vw, 2.6rem);
+    margin-bottom:var(--space-4);
+  }
+  .process-grid{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:var(--space-3);
+  }
+  .process-step{
+    border-top:1px solid var(--ink);
+    padding-top:var(--space-2);
+  }
+  .process-step .step-num{
+    font-family:var(--font-mono);
+    font-size:0.85rem;
+    color:var(--muted);
+    display:block;
+    margin-bottom:0.8rem;
+  }
+  .process-step h3{
+    font-family:var(--font-display);
+    font-weight:700;
+    font-size:1.3rem;
+    margin-bottom:0.6rem;
+  }
+  .process-step p{
+    font-size:0.95rem;
+    color:#4A4A4E;
+    max-width:32ch;
+  }
+
+  /* ============ FOOTER / CONTACT ============ */
+  .contact{
+    background:var(--ink);
+    color:var(--paper);
+    padding:var(--space-5) 0 var(--space-3);
+  }
+  .contact h2{
+    font-family:var(--font-display);
+    font-weight:700;
+    font-size:clamp(2.4rem, 8vw, 5.5rem);
+    letter-spacing:-0.02em;
+    line-height:1;
+    max-width:14ch;
+  }
+  .contact-row{
+    display:flex;
+    justify-content:space-between;
+    align-items:flex-end;
+    flex-wrap:wrap;
+    gap:var(--space-3);
+    margin-top:var(--space-4);
+    padding-bottom:var(--space-4);
+    border-bottom:1px solid var(--line);
+  }
+  .contact-email{
+    font-family:var(--font-display);
+    font-weight:600;
+    font-size:clamp(1.3rem, 3vw, 1.9rem);
+    text-decoration:none;
+    border-bottom:2px solid var(--magenta);
+    padding-bottom:2px;
+    transition:color 0.2s ease;
+  }
+  .contact-email:hover{ color:var(--cyan); border-color:var(--cyan); }
+
+  .contact-links{
+    display:flex;
+    gap:1.6rem;
+    list-style:none;
+    font-family:var(--font-mono);
+    font-size:0.8rem;
+    letter-spacing:0.1em;
+    text-transform:uppercase;
+  }
+  .contact-links a{
+    text-decoration:none;
+    color:var(--paper);
+    opacity:0.75;
+    transition:opacity 0.2s ease, color 0.2s ease;
+  }
+  .contact-links a:hover{ opacity:1; color:var(--yellow); }
+
+  .contact-foot{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-top:var(--space-2);
+    flex-wrap:wrap;
+    gap:1rem;
+    font-family:var(--font-mono);
+    font-size:0.72rem;
+    letter-spacing:0.16em;
+    text-transform:uppercase;
+    color:var(--muted);
+  }
+
+  /* ============ MOTION PREFERENCE ============ */
+  @media (prefers-reduced-motion: reduce){
+    html{ scroll-behavior:auto; }
+    .hero-title .layer{ transition:none; }
+    .scroll-cue span.arrow{ animation:none; }
+  }
+
+  /* ============ RESPONSIVE ============ */
+  @media (max-width: 860px){
+    .about-grid{ grid-template-columns:1fr; gap:var(--space-3); }
+    .process-grid{ grid-template-columns:1fr; gap:var(--space-4); }
+    .nav-links{ gap:0.9rem; }
+    .work-header{ flex-direction:column; align-items:flex-start; gap:0.6rem; }
+    .proof-card{ width:80vw; }
+  }
+  @media (max-width: 540px){
+    .nav{ flex-wrap:wrap; gap:0.8rem 0; padding:0.9rem var(--space-3); }
+    .nav-links{ gap:1rem; flex-wrap:wrap; width:100%; }
+    .nav-links a:nth-child(3){ display:none; }
+    .proof-bar{ gap:0.8rem; }
+    .proof-bar .scroll-cue{ margin-left:0; }
+  }
+</style>
 </head>
 <body>
-  <h1>Hello Mukesh 👋</h1>
+
+  <nav class="nav">
+    <a href="#top" class="nav-mark">MUKESH / DESIGNER</a>
+    <ul class="nav-links">
+      <li><a href="#work">Work</a></li>
+      <li><a href="#about">About</a></li>
+      <li><a href="#process">Process</a></li>
+      <li><a href="#contact">Contact</a></li>
+    </ul>
+  </nav>
+
+  <!-- ============ HERO ============ -->
+  <header class="hero" id="top">
+    <div class="hero-inner">
+      <div class="hero-stack">
+        <h1 class="hero-title is-loading" id="heroTitle">
+          <span class="layer layer-c" aria-hidden="true">MUKESH</span>
+          <span class="layer layer-m" aria-hidden="true">MUKESH</span>
+          <span class="layer layer-y" aria-hidden="true">MUKESH</span>
+          <span class="layer layer-k">MUKESH</span>
+        </h1>
+      </div>
+      <p class="hero-role">Graphic designer — brand identity, print, packaging and editorial design.</p>
+      <p class="hero-location">Based in Tirunelveli, Tamil Nadu · open for freelance work</p>
+
+      <div class="proof-bar">
+        <div class="swatches" aria-hidden="true">
+          <span class="swatch c"></span>
+          <span class="swatch m"></span>
+          <span class="swatch y"></span>
+          <span class="swatch k-paper"></span>
+        </div>
+        <span>Proof — approved for screen</span>
+        <span class="scroll-cue">Scroll <span class="arrow">↓</span></span>
+      </div>
+    </div>
+  </header>
+
+  <!-- ============ ABOUT ============ -->
+  <section class="about" id="about">
+    <div class="wrap about-grid">
+      <div>
+        <span class="eyebrow" style="color:var(--muted);">About</span>
+        <h2 style="margin-top:0.6rem;">Design that holds up on a shelf, a screen or a wall.</h2>
+        <p>I'm Mukesh. I design brand identities, posters, packaging and the occasional app interface — mostly for small studios, indie labels and food brands that want to look like themselves and nobody else.</p>
+        <p>Most projects start on paper. I sketch thumbnails before anything opens on a screen, then move into Illustrator or Figma once a direction earns its place. I like work that ends up printed, packaged or pinned to a wall just as much as work that lives behind glass.</p>
+      </div>
+      <dl class="spec-sheet">
+        <div class="spec-title">Job ticket — about</div>
+        <div class="spec-row"><dt>Role</dt><dd>Graphic &amp; Brand Designer</dd></div>
+        <div class="spec-row"><dt>Based</dt><dd>Tirunelveli, Tamil Nadu</dd></div>
+        <div class="spec-row"><dt>Tools</dt><dd>Illustrator, Photoshop, InDesign, Figma</dd></div>
+        <div class="spec-row"><dt>Focus</dt><dd>Identity, print, packaging, editorial</dd></div>
+        <div class="spec-row"><dt>Status</dt><dd>Open for freelance projects</dd></div>
+      </dl>
+    </div>
+  </section>
+
+  <!-- ============ WORK (horizontal scroll gallery) ============ -->
+  <section class="work" id="work">
+    <div class="work-sticky">
+      <div class="work-header wrap">
+        <h2>Selected work</h2>
+        <span class="work-counter"><span id="counter-current">01</span> / <span id="counter-total">06</span></span>
+      </div>
+
+      <div class="work-track" id="workTrack">
+
+        <!-- Project 1 -->
+        <article class="proof-card">
+          <!-- Replace this .card-visual div with: <img src="verandah-coffee.jpg" alt="Verandah Coffee branding"> -->
+          <div class="card-visual visual-branding">
+            <div class="shape-circle"></div>
+            <div class="shape-rule"></div>
+            <div class="shape-label">VERANDAH</div>
+          </div>
+          <div class="card-meta">
+            <span class="card-tag">Brand identity</span>
+            <h3>Verandah Coffee</h3>
+            <p>Wordmark, packaging and signage for a specialty coffee roaster.</p>
+            <span class="card-job">Job MK-2024-014 — 2024</span>
+          </div>
+        </article>
+
+        <!-- Project 2 -->
+        <article class="proof-card">
+          <!-- Replace this .card-visual div with: <img src="sundown-fest.jpg" alt="Sundown Fest poster series"> -->
+          <div class="card-visual visual-poster">
+            <div class="shape-sun"></div>
+            <div class="shape-stripes"></div>
+            <div class="shape-type">Sundown</div>
+          </div>
+          <div class="card-meta">
+            <span class="card-tag">Poster series</span>
+            <h3>Sundown Fest</h3>
+            <p>A three-poster set for an open-air music festival, built around one typeface and a shifting gradient.</p>
+            <span class="card-job">Job MK-2024-021 — 2024</span>
+          </div>
+        </article>
+
+        <!-- Project 3 -->
+        <article class="proof-card">
+          <!-- Replace this .card-visual div with: <img src="loop-records.jpg" alt="Loop Records album artwork"> -->
+          <div class="card-visual visual-music">
+            <div class="ring r1"></div>
+            <div class="ring r2"></div>
+            <div class="ring r3"></div>
+            <div class="ring r4"></div>
+          </div>
+          <div class="card-meta">
+            <span class="card-tag">Album artwork</span>
+            <h3>Loop Records</h3>
+            <p>Cover art and inner sleeve illustration for an independent label's debut EP.</p>
+            <span class="card-job">Job MK-2023-058 — 2023</span>
+          </div>
+        </article>
+
+        <!-- Project 4 -->
+        <article class="proof-card">
+          <!-- Replace this .card-visual div with: <img src="nilam-organics.jpg" alt="Nilam Organics packaging"> -->
+          <div class="card-visual visual-packaging">
+            <div class="box-top"></div>
+            <div class="box-face"></div>
+            <div class="leaf"></div>
+            <div class="pkg-label">NILAM ORGANICS</div>
+          </div>
+          <div class="card-meta">
+            <span class="card-tag">Packaging</span>
+            <h3>Nilam Organics</h3>
+            <p>Carton and label system for a small-batch organic produce brand, designed to scale across SKUs.</p>
+            <span class="card-job">Job MK-2023-041 — 2023</span>
+          </div>
+        </article>
+
+        <!-- Project 5 -->
+        <article class="proof-card">
+          <!-- Replace this .card-visual div with: <img src="quarter-studio.jpg" alt="Quarter Studio editorial layout"> -->
+          <div class="card-visual visual-editorial">
+            <div class="ed-block ed-1"></div>
+            <div class="ed-block ed-2"></div>
+            <div class="ed-block ed-3"></div>
+            <div class="ed-block ed-4"></div>
+            <div class="ed-block ed-5"></div>
+            <div class="ed-quote">“</div>
+          </div>
+          <div class="card-meta">
+            <span class="card-tag">Editorial</span>
+            <h3>Quarter Studio</h3>
+            <p>Grid system and layout templates for a quarterly design and culture magazine.</p>
+            <span class="card-job">Job MK-2023-033 — 2023</span>
+          </div>
+        </article>
+
+        <!-- Project 6 -->
+        <article class="proof-card">
+          <!-- Replace this .card-visual div with: <img src="pulse-ui.jpg" alt="Pulse app UI kit"> -->
+          <div class="card-visual visual-ui">
+            <div class="phone">
+              <div class="bar short"></div>
+              <div class="bar"></div>
+              <div class="bar"></div>
+              <div class="bar short"></div>
+              <div class="bar accent"></div>
+            </div>
+          </div>
+          <div class="card-meta">
+            <span class="card-tag">UI design</span>
+            <h3>Pulse</h3>
+            <p>Visual language and component kit for a habit-tracking app, handed off as a Figma library.</p>
+            <span class="card-job">Job MK-2022-077 — 2022</span>
+          </div>
+        </article>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ PROCESS ============ -->
+  <section class="process" id="process">
+    <div class="wrap">
+      <h2>How a project runs</h2>
+      <div class="process-grid">
+        <div class="process-step">
+          <span class="step-num">01 — Brief</span>
+          <h3>Brief &amp; research</h3>
+          <p>A short call to understand the brand, the audience and what the design needs to do — followed by reference gathering and quick thumbnails.</p>
+        </div>
+        <div class="process-step">
+          <span class="step-num">02 — Direction</span>
+          <h3>Concept &amp; design</h3>
+          <p>Two or three directions, built out properly rather than as rough sketches, so the choice is based on something real.</p>
+        </div>
+        <div class="process-step">
+          <span class="step-num">03 — Delivery</span>
+          <h3>Refine &amp; deliver</h3>
+          <p>One direction refined to final, with print-ready files, source files and a short usage guide handed over at the end.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ CONTACT / FOOTER ============ -->
+  <footer class="contact" id="contact">
+    <div class="wrap">
+      <span class="eyebrow" style="color:var(--muted);">Get in touch</span>
+      <h2 style="margin-top:0.8rem;">Got something to design?</h2>
+
+      <div class="contact-row">
+        <a href="mailto:hello@mukeshdesigns.com" class="contact-email">hello@mukeshdesigns.com</a>
+        <ul class="contact-links">
+          <li><a href="#" target="_blank" rel="noopener">Behance</a></li>
+          <li><a href="#" target="_blank" rel="noopener">Instagram</a></li>
+          <li><a href="#" target="_blank" rel="noopener">LinkedIn</a></li>
+        </ul>
+      </div>
+
+      <div class="contact-foot">
+        <span>Mukesh — Graphic Designer</span>
+        <div class="swatches" aria-hidden="true">
+          <span class="swatch c"></span>
+          <span class="swatch m"></span>
+          <span class="swatch y"></span>
+          <span class="swatch k-paper"></span>
+        </div>
+        <span>© 2026 — end of proof</span>
+      </div>
+    </div>
+  </footer>
+
+<script>
+  // ---- Hero registration settle animation ----
+  var heroTitle = document.getElementById('heroTitle');
+  window.requestAnimationFrame(function(){
+    setTimeout(function(){
+      heroTitle.classList.remove('is-loading');
+      heroTitle.classList.add('is-loaded');
+    }, 150);
+  });
+
+  // ---- Horizontal scroll "proof table" gallery ----
+  (function(){
+    var section = document.getElementById('work');
+    var sticky  = document.querySelector('.work-sticky');
+    var track   = document.getElementById('workTrack');
+    var counter = document.getElementById('counter-current');
+    var total   = document.getElementById('counter-total');
+    if(!section || !track) return;
+
+    var cards = track.children.length;
+    total.textContent = String(cards).padStart(2,'0');
+
+    var reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    var isNarrow = window.innerWidth <= 860;
+
+    if(reduced || isNarrow){
+      section.style.height = 'auto';
+      sticky.style.position = 'static';
+      sticky.style.height = 'auto';
+      track.style.overflowX = 'auto';
+      track.style.scrollSnapType = 'x mandatory';
+      track.style.paddingBottom = '3rem';
+      Array.prototype.forEach.call(track.children, function(card){
+        card.style.scrollSnapAlign = 'start';
+      });
+      return;
+    }
+
+    var ticking = false;
+
+    function update(){
+      var trackWidth = track.scrollWidth;
+      var viewportW  = window.innerWidth;
+      var scrollDistance = Math.max(trackWidth - viewportW, 1);
+
+      section.style.height = (scrollDistance + window.innerHeight) + 'px';
+
+      var rect = section.getBoundingClientRect();
+      var progress = (-rect.top) / scrollDistance;
+      progress = Math.min(Math.max(progress, 0), 1);
+
+      track.style.transform = 'translateX(-' + (progress * scrollDistance) + 'px)';
+
+      var current = Math.min(cards, Math.floor(progress * cards) + 1);
+      counter.textContent = String(current).padStart(2,'0');
+
+      ticking = false;
+    }
+
+    function onScroll(){
+      if(!ticking){
+        window.requestAnimationFrame(update);
+        ticking = true;
+      }
+    }
+
+    window.addEventListener('scroll', onScroll);
+    window.addEventListener('resize', update);
+    update();
+  })();
+</script>
+
 </body>
 </html>
